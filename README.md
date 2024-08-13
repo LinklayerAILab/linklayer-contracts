@@ -11,3 +11,11 @@ REPORT_GAS=true npx hardhat test
 npx hardhat node
 npx hardhat ignition deploy ./ignition/modules/Lock.ts
 ```
+
+## set up
+
+### upgrade plugin
+```shell
+npm i @openzeppelin/hardhat-upgrades
+npm install --save-dev @nomicfoundation/hardhat-ethers ethers
+```

@@ -1,21 +1,17 @@
-import "@openzeppelin/contracts-upgradeable/token/ERC20/ERC20Upgradeable.sol";
-import "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol";
-contract XLToken is ERC20Upgradeable, AccessControlUpgradeable {
-    
-    /*************
-     * Constants *
-     *************/
-    bytes32 public constant MINTER_ROLE = keccak256("MINTER_ROLE");
-    bytes32 public constant BURNER_ROLE = keccak256("BURNER_ROLE");
-    bytes32 public constant WHITELISTED_ROLE = keccak256("WHITELISTED_ROLE");
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;
 
+import "@openzeppelin/contracts-upgradeable/token/ERC20/ERC20Upgradeable.sol";
+import "./Auth.sol";
+
+contract XLToken is ERC20Upgradeable, Auth {
     /**********
      * Errors *
      **********/
     error InvalidZeroAddress();
     error InvalidErbAmt(uint256 erbAmt);
     error InsufficientXLBalance(address from, uint256 balance);
-    error FailedTransferERB(address from, address to, uint256 erbAmt);
+    error InsufficientERBBalance(address from, uint256 balance);
 
     /**********
      * Event *
@@ -27,16 +23,13 @@ contract XLToken is ERC20Upgradeable, AccessControlUpgradeable {
     /// @param erbAmt Number of erbs gifted to users
     event Claim(address indexed recipient, uint256 xlAmt, uint256 erbAmt);
 
-    function initialize() public initializer {
+    function initialize(address superOwner) public override initializer {
+        super.initialize(superOwner); // Auth
         __ERC20_init("XL", "XL");
-        __AccessControl_init();
-
-        grantRole(MINTER_ROLE, msg.sender);
-        grantRole(BURNER_ROLE, msg.sender);
-        grantRole(DEFAULT_ADMIN_ROLE, msg.sender);
-
-        _mint(msg.sender, 1000000 * 10 ** uint256(decimals()));
+        _mint(msg.sender, 1000000);
     }
+
+    receive() external payable {}
 
     /********************
      ***** Modifiers ****
@@ -68,51 +61,34 @@ contract XLToken is ERC20Upgradeable, AccessControlUpgradeable {
         _burn(from, amount);
     }
 
-    function addWhitelisted(
-        address account
-    ) public onlyRole(DEFAULT_ADMIN_ROLE) {
-        _grantRole(WHITELISTED_ROLE, account);
-    }
-
-    function removeWhitelisted(
-        address account
-    ) public onlyRole(DEFAULT_ADMIN_ROLE) {
-        _revokeRole(WHITELISTED_ROLE, account);
-    }
-
-    function isWhitelisted(address account) public view returns (bool) {
-        return hasRole(WHITELISTED_ROLE, account);
-    }
-
     /// @notice The user extracts XL tokens and transfers an erb to the user,
     /// both of which are completed by the whitelist
     /// @param recipient The address of the account to mint tokens to
     /// @param _xlAmt The amount of tokens to mint
-    /// @param _erbAmt The amount of tokens to mint
     function claim(
         address payable recipient,
-        uint256 _xlAmt,
-        uint256 _erbAmt
-    ) external onlyWhitelisted {
+        uint256 _xlAmt
+    ) external payable onlyWhitelisted{
         if (_xlAmt > balanceOf(msg.sender)) {
             revert InsufficientXLBalance(msg.sender, balanceOf(msg.sender));
         }
 
-        if (_erbAmt < 0) {
-            revert InvalidErbAmt(_erbAmt);
+        if (msg.value < 0){
+            revert InvalidErbAmt(msg.value);
+        }
+
+        if (address(this).balance < msg.value){
+            revert InsufficientERBBalance(address(this), address(this).balance);
         }
 
         if (recipient == address(0)) {
             revert InvalidZeroAddress();
         }
 
-        _mint(recipient, _xlAmt);
+       _transfer(msg.sender, recipient, _xlAmt);
 
-        (bool success, ) = recipient.call{value: _erbAmt}("");
-        if (!success) {
-            revert FailedTransferERB(msg.sender, recipient, _erbAmt);
-        }
+        recipient.transfer(msg.value);
 
-        emit Claim(recipient, _xlAmt, _erbAmt);
+        emit Claim(recipient, _xlAmt, msg.value);
     }
 }
