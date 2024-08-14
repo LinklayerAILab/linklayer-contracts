@@ -91,9 +91,4 @@ contract XLToken is ERC20Upgradeable, Auth {
 
         emit Claim(recipient, _xlAmt, msg.value);
     }
-
-    /// @notice test upgrade
-    function testUpgrade() public pure returns (uint256) {
-        return 50;
-    }
 }
