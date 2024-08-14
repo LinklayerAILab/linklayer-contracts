@@ -68,16 +68,16 @@ contract XLToken is ERC20Upgradeable, Auth {
     function claim(
         address payable recipient,
         uint256 _xlAmt
-    ) external payable onlyWhitelisted{
+    ) external payable onlyWhitelisted {
         if (_xlAmt > balanceOf(msg.sender)) {
             revert InsufficientXLBalance(msg.sender, balanceOf(msg.sender));
         }
 
-        if (msg.value < 0){
+        if (msg.value < 0) {
             revert InvalidErbAmt(msg.value);
         }
 
-        if (address(this).balance < msg.value){
+        if (address(this).balance < msg.value) {
             revert InsufficientERBBalance(address(this), address(this).balance);
         }
 
@@ -85,10 +85,15 @@ contract XLToken is ERC20Upgradeable, Auth {
             revert InvalidZeroAddress();
         }
 
-       _transfer(msg.sender, recipient, _xlAmt);
+        _transfer(msg.sender, recipient, _xlAmt);
 
         recipient.transfer(msg.value);
 
         emit Claim(recipient, _xlAmt, msg.value);
+    }
+
+    /// @notice test upgrade
+    function testUpgrade() public pure returns (uint256) {
+        return 50;
     }
 }

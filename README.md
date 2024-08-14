@@ -35,13 +35,15 @@ npx hardhat test
 ```
 
 ## deploy
+> If there is no change in the implementation, then every time this script is executed, the proxy contract address will change
 ```shell
-npx hardhat deployXL --network localhost
+npx hardhat deployXL --network erbieTestNet
 ```
 
 ## upgrade
 > Note that a network must be established. If it is for testing, NPX hard hat node can be used, and then -- network localhost
 > Otherwise, you will encounter this error. Don't look like an ERC 1967 proxy with a logical contract address
+> Contract upgrade, there will be a delay in hre.upgrades.erc1967. getImplementeAddress
 ```shell
-npx hardhat upgrade --proxyaddr <proxy addr> --network localhost
+npx hardhat upgrade --proxyaddr <proxy addr> --network erbieTestNet
 ```
