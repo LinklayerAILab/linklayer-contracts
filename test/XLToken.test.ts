@@ -1,6 +1,7 @@
 import { expect } from "chai";
 import { ethers, upgrades } from "hardhat";
 import { XLToken } from "../typechain-types"
+import { MockXLTokenV2 } from "../typechain-types/contracts/mock/MockXLTokenV2.sol";
 
 describe("XL", function () {
     let token: XLToken;
@@ -81,13 +82,25 @@ describe("XL", function () {
         });
 
         it("Should transfer the correct amount of XL and ERB", async function () {
-            expect(await token.balanceOf(burner.address)).to.equal(0);  
+            expect(await token.balanceOf(burner.address)).to.equal(0);
             expect(await ethers.provider.getBalance(burner.address)).to.equal(ethers.parseEther("10000"));
 
             await token.connect(owner).claim(burner.address, 100, { value: ethers.parseEther("1") })
 
             expect(await ethers.provider.getBalance(burner.address)).to.equal(ethers.parseEther("10001"));
             expect(await token.balanceOf(burner.address)).to.equal(100);
+        });
+    });
+
+
+    describe("Upgrade", function () {
+        it("Should upgrade contracts", async function () {
+            // upgrade XLToken to XLTokenV2
+            const XLTokenV2 = await ethers.getContractFactory("MockXLTokenV2");
+            token = await upgrades.upgradeProxy(await token.getAddress(), XLTokenV2) as unknown as MockXLTokenV2;
+            console.log("XLTokenV2 deployed to:", await token.getAddress());
+
+            expect(await token.TestUpgrade()).to.equal(200);
         });
     });
 });
