@@ -26,7 +26,7 @@ contract XLToken is ERC20Upgradeable, Auth {
     function initialize(address superOwner) public override initializer {
         super.initialize(superOwner); // Auth
         __ERC20_init("XL", "XL");
-        _mint(msg.sender, 1000000);
+        _mint(msg.sender, 5000000 * 1e18);
     }
 
     receive() external payable {}
