@@ -12,8 +12,7 @@ task("deployXL", "deploy xl token contract")
         token = await hre.upgrades.deployProxy(XLToken, [deployer.address]) as unknown as XLToken;
         await token.waitForDeployment();
 
-        // 0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512
-        // proxy address
+        // proxy address 0x1F22e90d61D08c4B327139728902682CA2bCb042
         console.log("XL deployed to:", await token.getAddress());
        
         // implementation address

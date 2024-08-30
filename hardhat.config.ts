@@ -3,6 +3,7 @@ import "@nomicfoundation/hardhat-toolbox";
 import '@openzeppelin/hardhat-upgrades';
 import "./tasks/deploy"
 import "./tasks/upgrade"
+import "./tasks/addwhitelist"
 import * as dotenv from 'dotenv';
 
 dotenv.config();

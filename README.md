@@ -47,3 +47,13 @@ npx hardhat deployXL --network erbieTestNet
 ```shell
 npx hardhat upgrade --proxyaddr <proxy addr> --network erbieTestNet
 ```
+
+## add addr to whitelist
+```shell
+npx hardhat addWhiteList --addr <addr> --network erbieTestNet
+npx hardhat addWhiteList --addr 0xDb85D05039408E9bD4644AB3527CBD2fcbbbD527 --network erbieTestNet
+npx hardhat addWhiteList --addr 0x651C90B37E88e68aaC134D12DCE52E133f8116b7 --network erbieTestNet
+npx hardhat addWhiteList --addr 0x1F49b7F54960CA8a56eea5a01be54A5f71185544 --network erbieTestNet
+npx hardhat addWhiteList --addr 0x8a06b59f2877825898f44DA006DeE79d3f8C6C65 --network erbieTestNet
+npx hardhat addWhiteList --addr 0xaEc7583613030AeBEF7B609baefe66902e13d8Ac --network erbieTestNet 
+```
