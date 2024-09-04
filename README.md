@@ -39,6 +39,9 @@ npx hardhat test
 ```shell
 npx hardhat deployXL --network erbieTestNet
 ```
+```shell
+npx hardhat deployL --network erbieTestNet
+```
 
 ## upgrade
 > Note that a network must be established. If it is for testing, NPX hard hat node can be used, and then -- network localhost
@@ -46,6 +49,8 @@ npx hardhat deployXL --network erbieTestNet
 > Contract upgrade, there will be a delay in hre.upgrades.erc1967. getImplementeAddress
 ```shell
 npx hardhat upgrade --proxyaddr <proxy addr> --network erbieTestNet
+
+npx hardhat upgradeL --proxyaddr <proxy addr> --network erbieTestNet
 ```
 
 ## add addr to whitelist
@@ -57,3 +62,5 @@ npx hardhat addWhiteList --addr 0x1F49b7F54960CA8a56eea5a01be54A5f71185544 --net
 npx hardhat addWhiteList --addr 0x8a06b59f2877825898f44DA006DeE79d3f8C6C65 --network erbieTestNet
 npx hardhat addWhiteList --addr 0xaEc7583613030AeBEF7B609baefe66902e13d8Ac --network erbieTestNet 
 ```
+
+## transfer L,XL,ERB to addr

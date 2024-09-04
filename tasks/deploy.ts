@@ -1,5 +1,5 @@
 import { task } from "hardhat/config";
-import { XLToken } from "../typechain-types"
+import { XLToken,LToken } from "../typechain-types"
 
 
 task("deployXL", "deploy xl token contract")
@@ -17,4 +17,21 @@ task("deployXL", "deploy xl token contract")
        
         // implementation address
         console.log("XL implementation address:", await hre.upgrades.erc1967.getImplementationAddress(await token.getAddress()));
+    })
+
+    task("deployL", "deploy l token contract")
+    .setAction(async (args, hre) => {
+        let token: LToken;
+        const { ethers } = hre;
+        const [deployer] = await ethers.getSigners();
+        const LToken = await ethers.getContractFactory("LToken");
+
+        token = await hre.upgrades.deployProxy(LToken, [deployer.address]) as unknown as LToken;
+        await token.waitForDeployment();
+
+        // proxy address 
+        console.log("L deployed to:", await token.getAddress());
+       
+        // implementation address
+        console.log("L implementation address:", await hre.upgrades.erc1967.getImplementationAddress(await token.getAddress()));
     })
