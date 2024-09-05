@@ -29,9 +29,9 @@ task("deployXL", "deploy xl token contract")
         token = await hre.upgrades.deployProxy(LToken, [deployer.address]) as unknown as LToken;
         await token.waitForDeployment();
 
-        // proxy address 
+        // proxy address  0xa4db5cB5614cd71dF825584DB79356BbA8258929
         console.log("L deployed to:", await token.getAddress());
        
-        // implementation address
+        // implementation address 0x11bD179dCB1faa0BBd5318D0379b8146Fef40e9C
         console.log("L implementation address:", await hre.upgrades.erc1967.getImplementationAddress(await token.getAddress()));
     })
