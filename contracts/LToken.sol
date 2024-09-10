@@ -5,12 +5,14 @@ import "@openzeppelin/contracts-upgradeable/token/ERC20/ERC20Upgradeable.sol";
 import "./Auth.sol";
 
 contract LToken is ERC20Upgradeable, Auth {
+    uint256 public constant MAX_SUPPLY = 100000000000 * 10 ** 18; // 100 billion
+
     /**********
      * Errors *
      **********/
     error InvalidZeroAddress();
     error InvalidErbAmt(uint256 erbAmt);
-    error InsufficientLBalance(address from, uint256 balance);
+    error ExceedsMaxSupply(uint256 totalSupply, uint256 lAmt);
     error InsufficientERBBalance(address from, uint256 balance);
 
     /**********
@@ -26,7 +28,6 @@ contract LToken is ERC20Upgradeable, Auth {
     function initialize(address superOwner) public override initializer {
         super.initialize(superOwner); // Auth
         __ERC20_init("L", "L");
-        _mint(msg.sender, 5000000 * 1e18);
     }
 
     receive() external payable {}
@@ -69,10 +70,6 @@ contract LToken is ERC20Upgradeable, Auth {
         address payable recipient,
         uint256 _lAmt
     ) external payable onlyWhitelisted {
-        if (_lAmt > balanceOf(msg.sender)) {
-            revert InsufficientLBalance(msg.sender, balanceOf(msg.sender));
-        }
-
         if (msg.value < 0) {
             revert InvalidErbAmt(msg.value);
         }
@@ -85,7 +82,11 @@ contract LToken is ERC20Upgradeable, Auth {
             revert InvalidZeroAddress();
         }
 
-        _transfer(msg.sender, recipient, _lAmt);
+        if (totalSupply() + _lAmt > MAX_SUPPLY) {
+            revert ExceedsMaxSupply(totalSupply(), _lAmt);
+        }
+
+        _mint(recipient, _lAmt);
 
         recipient.transfer(msg.value);
 
