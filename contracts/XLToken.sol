@@ -2,15 +2,55 @@
 pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts-upgradeable/token/ERC20/ERC20Upgradeable.sol";
+import "@openzeppelin/contracts/utils/math/Math.sol";
 import "./Auth.sol";
 
 contract XLToken is ERC20Upgradeable, Auth {
+    using Math for uint256;
+
+    uint256 public constant MAX_SUPPLY = 1_000_000_000 * 10 ** 18;
+
+    // 时间常量（以秒为单位）
+    uint256 public constant THREE_YEARS = 3 * 365 days;
+    uint256 public constant FIVE_YEARS = 5 * 365 days;
+    uint256 public constant MONTH = 30 days;
+    uint256 public constant QUARTER = 90 days;
+
+    /******************
+     * Assign address *
+     *****************/
+    address public bondingAddress; // 65% binding to earn addresses
+    address public taskIncentiveAddress; // 10% Task and Invitation Incentive Address
+    address public ecosystemFundAddress; // 10% Ecosystem Fund Address
+    address public strategicFinanceAddress; // 8% Strategic Financing Address
+    address public teamAddress; // 5% team address
+    address public marketingAddress; // 2% marketing address
+
+    /********************
+     * Supply Amounts ***
+     ********************/
+    uint256 public constant BONDING_SUPPLY = 650_000_000 * 10 ** 18; //65% released through claim
+    uint256 public constant TASK_INCENTIVE_SUPPLY = 100_000_000 * 10 ** 18; // 10% pre allocation, fully unlocked
+    uint256 public constant ECOSYSTEM_FUND_SUPPLY = 100_000_000 * 10 ** 18; // 10% linear release over 3 years
+    uint256 public constant STRATEGIC_FINANCE_SUPPLY = 80_000_000 * 10 ** 18; // 8% linearly released over 3 years
+    uint256 public constant TEAM_SUPPLY = 50_000_000 * 10 ** 18; //5% linear release over 5 years
+    uint256 public constant MARKETING_SUPPLY = 20_000_000 * 10 ** 18; // 2% pre allocation, fully unlocked
+
+    uint256 public ecosystemStartTime;
+    uint256 public strategicFinanceStartTime;
+    uint256 public teamStartTime;
+
+    uint256 public ecosystemReleased;
+    uint256 public strategicFinanceReleased;
+    uint256 public teamReleased;
+
+    uint256 public totalClaimed;
+
     /**********
      * Errors *
      **********/
     error InvalidZeroAddress();
-    error InvalidErbAmt(uint256 erbAmt);
-    error InsufficientXLBalance(address from, uint256 balance);
+    error ExceedsClaimSupply(uint256 claimed, uint256 lAmt);
     error InsufficientERBBalance(address from, uint256 balance);
 
     /**********
@@ -23,10 +63,31 @@ contract XLToken is ERC20Upgradeable, Auth {
     /// @param erbAmt Number of erbs gifted to users
     event Claim(address indexed recipient, uint256 xlAmt, uint256 erbAmt);
 
-    function initialize(address superOwner) public override initializer {
-        super.initialize(superOwner); // Auth
+    function initialize(
+        address _superOwner,
+        address _bondingAddress,
+        address _taskIncentiveAddress,
+        address _ecosystemFundAddress,
+        address _strategicFinanceAddress,
+        address _teamAddress,
+        address _marketingAddress
+    ) public initializer {
+        super.initialize(_superOwner); // Auth
         __ERC20_init("XL", "XL");
-        _mint(msg.sender, 5000000 * 1e18);
+        bondingAddress = _bondingAddress;
+        taskIncentiveAddress = _taskIncentiveAddress;
+        ecosystemFundAddress = _ecosystemFundAddress;
+        strategicFinanceAddress = _strategicFinanceAddress;
+        teamAddress = _teamAddress;
+        marketingAddress = _marketingAddress;
+
+        // pre allocated tokens
+        _mint(taskIncentiveAddress, TASK_INCENTIVE_SUPPLY);
+        _mint(marketingAddress, MARKETING_SUPPLY);
+
+        ecosystemStartTime = block.timestamp;
+        strategicFinanceStartTime = block.timestamp;
+        teamStartTime = block.timestamp;
     }
 
     receive() external payable {}
@@ -69,14 +130,6 @@ contract XLToken is ERC20Upgradeable, Auth {
         address payable recipient,
         uint256 _xlAmt
     ) external payable onlyWhitelisted {
-        if (_xlAmt > balanceOf(msg.sender)) {
-            revert InsufficientXLBalance(msg.sender, balanceOf(msg.sender));
-        }
-
-        if (msg.value < 0) {
-            revert InvalidErbAmt(msg.value);
-        }
-
         if (address(this).balance < msg.value) {
             revert InsufficientERBBalance(address(this), address(this).balance);
         }
@@ -85,10 +138,96 @@ contract XLToken is ERC20Upgradeable, Auth {
             revert InvalidZeroAddress();
         }
 
-        _transfer(msg.sender, recipient, _xlAmt);
+        if (totalClaimed + _xlAmt > BONDING_SUPPLY) {
+            revert ExceedsClaimSupply(totalClaimed, _xlAmt);
+        }
 
+        // xl option
+        totalClaimed += _xlAmt;
+        _mint(recipient, _xlAmt);
+
+        // erb option
         recipient.transfer(msg.value);
 
         emit Claim(recipient, _xlAmt, msg.value);
+    }
+
+    function releaseLinear() external onlySuperOwner {
+        uint256 ecosystemToRelease = calculateLinearRelease(
+            ECOSYSTEM_FUND_SUPPLY,
+            THREE_YEARS,
+            ecosystemStartTime,
+            ecosystemReleased,
+            MONTH
+        );
+        uint256 strategicToRelease = calculateLinearRelease(
+            STRATEGIC_FINANCE_SUPPLY,
+            THREE_YEARS,
+            strategicFinanceStartTime,
+            strategicFinanceReleased,
+            MONTH
+        );
+        uint256 teamToRelease = calculateLinearRelease(
+            TEAM_SUPPLY,
+            FIVE_YEARS,
+            teamStartTime,
+            teamReleased,
+            QUARTER
+        );
+
+        if (ecosystemToRelease > 0) {
+            ecosystemReleased = ecosystemReleased + ecosystemToRelease;
+            _mint(ecosystemFundAddress, ecosystemToRelease);
+        }
+
+        if (strategicToRelease > 0) {
+            strategicFinanceReleased =
+                strategicFinanceReleased +
+                strategicToRelease;
+            _mint(strategicFinanceAddress, strategicToRelease);
+        }
+
+        if (teamToRelease > 0) {
+            teamReleased = teamReleased + teamToRelease;
+            _mint(teamAddress, teamToRelease);
+        }
+    }
+
+    function calculateLinearRelease(
+        uint256 total,
+        uint256 duration,
+        uint256 startTime,
+        uint256 alreadyReleased,
+        uint256 releaseInterval
+    ) internal view returns (uint256) {
+        if (block.timestamp <= startTime) return 0;
+        uint256 elapsedTime = block.timestamp - startTime;
+        uint256 totalPeriods = duration / releaseInterval;
+        uint256 elapsedPeriods = elapsedTime / releaseInterval;
+
+        uint256 totalToRelease = (total * elapsedPeriods) / totalPeriods;
+
+        if (totalToRelease > total) {
+            totalToRelease = total;
+        }
+
+        uint256 toRelease = totalToRelease - alreadyReleased;
+        return toRelease;
+    }
+
+    function setAddresses(
+        address _bondingAddress,
+        address _taskIncentiveAddress,
+        address _ecosystemFundAddress,
+        address _strategicFinanceAddress,
+        address _teamAddress,
+        address _marketingAddress
+    ) external onlySuperOwner {
+        bondingAddress = _bondingAddress;
+        taskIncentiveAddress = _taskIncentiveAddress;
+        ecosystemFundAddress = _ecosystemFundAddress;
+        strategicFinanceAddress = _strategicFinanceAddress;
+        teamAddress = _teamAddress;
+        marketingAddress = _marketingAddress;
     }
 }
