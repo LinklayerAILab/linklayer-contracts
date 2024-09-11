@@ -3,7 +3,6 @@ pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts-upgradeable/token/ERC20/ERC20Upgradeable.sol";
 import "@openzeppelin/contracts/utils/math/Math.sol";
-import "hardhat/console.sol";
 import "./Auth.sol";
 
 contract XLToken is ERC20Upgradeable, Auth {
@@ -153,20 +152,20 @@ contract XLToken is ERC20Upgradeable, Auth {
     }
 
     function releaseLinear() external onlySuperOwner {
-        // uint256 ecosystemToRelease = calculateLinearRelease(
-        //     ECOSYSTEM_FUND_SUPPLY,
-        //     THREE_YEARS,
-        //     ecosystemStartTime,
-        //     ecosystemReleased,
-        //     MONTH
-        // );
-        // uint256 strategicToRelease = calculateLinearRelease(
-        //     STRATEGIC_FINANCE_SUPPLY,
-        //     THREE_YEARS,
-        //     strategicFinanceStartTime,
-        //     strategicFinanceReleased,
-        //     MONTH
-        // );
+        uint256 ecosystemToRelease = calculateLinearRelease(
+            ECOSYSTEM_FUND_SUPPLY,
+            THREE_YEARS,
+            ecosystemStartTime,
+            ecosystemReleased,
+            MONTH
+        );
+        uint256 strategicToRelease = calculateLinearRelease(
+            STRATEGIC_FINANCE_SUPPLY,
+            THREE_YEARS,
+            strategicFinanceStartTime,
+            strategicFinanceReleased,
+            MONTH
+        );
         uint256 teamToRelease = calculateLinearRelease(
             TEAM_SUPPLY,
             FIVE_YEARS,
@@ -175,28 +174,22 @@ contract XLToken is ERC20Upgradeable, Auth {
             QUARTER
         );
 
-        // if (ecosystemToRelease > 0) {
-        //     ecosystemReleased = ecosystemReleased + ecosystemToRelease;
-        //     _mint(ecosystemFundAddress, ecosystemToRelease);
-        // }
+        if (ecosystemToRelease > 0) {
+            ecosystemReleased = ecosystemReleased + ecosystemToRelease;
+            _mint(ecosystemFundAddress, ecosystemToRelease);
+        }
 
-        // if (strategicToRelease > 0) {
-        //     strategicFinanceReleased =
-        //         strategicFinanceReleased +
-        //         strategicToRelease;
-        //     _mint(strategicFinanceAddress, strategicToRelease);
-        // }
+        if (strategicToRelease > 0) {
+            strategicFinanceReleased =
+                strategicFinanceReleased +
+                strategicToRelease;
+            _mint(strategicFinanceAddress, strategicToRelease);
+        }
 
         if (teamToRelease > 0) {
             teamReleased = teamReleased + teamToRelease;
             _mint(teamAddress, teamToRelease);
         }
-        console.log("releaseLinear");
-        //console.logUint(ecosystemReleased);
-        //console.logUint(strategicFinanceReleased);
-         console.logUint(teamReleased);
-         console.log("\n");
-
     }
 
     function calculateLinearRelease(
@@ -206,38 +199,17 @@ contract XLToken is ERC20Upgradeable, Auth {
         uint256 alreadyReleased,
         uint256 releaseInterval
     ) internal view returns (uint256) {
-        console.log("calculateLinearRelease");
-        console.logUint(total);
-        console.logUint(duration);
-        console.logUint(startTime);
-        console.logUint(alreadyReleased);
-        console.logUint(releaseInterval);
-
         if (block.timestamp <= startTime) return 0;
         uint256 elapsedTime = block.timestamp - startTime;
-
-        console.log("elapsedTime");
-        console.logUint(block.timestamp);
-        console.logUint(startTime);
-        console.logUint(elapsedTime);
 
         uint256 totalPeriods = duration / releaseInterval;
         uint256 elapsedPeriods = elapsedTime / releaseInterval;
 
         uint256 totalToRelease = (total * elapsedPeriods) / totalPeriods;
 
-        console.log("totalToRelease--start");
-        console.log(totalPeriods);
-        console.log(elapsedPeriods);
-        console.logUint(totalToRelease);
-
         if (totalToRelease > total) {
             totalToRelease = total;
         }
-
-        console.log("totalToRelease--end");
-        console.logUint(totalToRelease);
-        console.log("\n");
 
         uint256 toRelease = totalToRelease - alreadyReleased;
         return toRelease;
