@@ -151,6 +151,10 @@ contract XLToken is ERC20Upgradeable, Auth {
         emit Claim(recipient, _xlAmt, msg.value);
     }
 
+    /// @notice Releases tokens to designated addresses based on a linear release schedule.
+    /// @dev This function calculates the amount of tokens to be released for each category (ecosystem, strategic finance, and team)
+    ///      and mints the corresponding tokens to the respective addresses.
+    /// @dev Requires the caller to be the super owner.
     function releaseLinear() external onlySuperOwner {
         uint256 ecosystemToRelease = calculateLinearRelease(
             ECOSYSTEM_FUND_SUPPLY,
@@ -192,6 +196,13 @@ contract XLToken is ERC20Upgradeable, Auth {
         }
     }
 
+    /// @notice Calculates the amount of tokens to be released linearly over time.
+    /// @param total The total amount of tokens to be released.
+    /// @param duration The total duration of the release period.
+    /// @param startTime The timestamp when the release starts.
+    /// @param alreadyReleased The amount of tokens already released.
+    /// @param releaseInterval The interval at which tokens are released (e.g., monthly, quarterly).
+    /// @return The amount of tokens to be released in the current period.
     function calculateLinearRelease(
         uint256 total,
         uint256 duration,
