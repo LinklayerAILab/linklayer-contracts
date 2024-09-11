@@ -25,8 +25,8 @@ contract LToken is ERC20Upgradeable, Auth {
     /// @param erbAmt Number of erbs gifted to users
     event Claim(address indexed recipient, uint256 lAmt, uint256 erbAmt);
 
-    function initialize(address superOwner) public override initializer {
-        super.initialize(superOwner); // Auth
+    function initialize(address superOwner) public  initializer {
+        super.initializeAuth(superOwner); // Auth
         __ERC20_init("L", "L");
     }
 

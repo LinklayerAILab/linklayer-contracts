@@ -23,8 +23,8 @@ contract MockXLTokenV2 is ERC20Upgradeable, Auth {
     /// @param erbAmt Number of erbs gifted to users
     event Claim(address indexed recipient, uint256 xlAmt, uint256 erbAmt);
 
-    function initialize(address superOwner) public override initializer {
-        super.initialize(superOwner); // Auth
+    function initialize(address superOwner) public initializer {
+        super.initializeAuth(superOwner); // Auth
         __ERC20_init("XL", "XL");
         _mint(msg.sender, 1000000);
     }

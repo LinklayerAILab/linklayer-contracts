@@ -22,7 +22,7 @@ contract Auth is AccessControlUpgradeable {
         _;
     }
 
-    function initialize(address superOwner) public virtual initializer {
+    function initializeAuth(address superOwner) public initializer {
         __AccessControl_init();
 
         owner = superOwner;
