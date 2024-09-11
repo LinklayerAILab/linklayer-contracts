@@ -10,7 +10,6 @@ contract XLToken is ERC20Upgradeable, Auth {
 
     uint256 public constant MAX_SUPPLY = 1_000_000_000 * 10 ** 18;
 
-    // 时间常量（以秒为单位）
     uint256 public constant THREE_YEARS = 3 * 365 days;
     uint256 public constant FIVE_YEARS = 5 * 365 days;
     uint256 public constant MONTH = 30 days;
@@ -19,7 +18,6 @@ contract XLToken is ERC20Upgradeable, Auth {
     /******************
      * Assign address *
      *****************/
-    address public bondingAddress; // 65% binding to earn addresses
     address public taskIncentiveAddress; // 10% Task and Invitation Incentive Address
     address public ecosystemFundAddress; // 10% Ecosystem Fund Address
     address public strategicFinanceAddress; // 8% Strategic Financing Address
@@ -36,14 +34,18 @@ contract XLToken is ERC20Upgradeable, Auth {
     uint256 public constant TEAM_SUPPLY = 50_000_000 * 10 ** 18; //5% linear release over 5 years
     uint256 public constant MARKETING_SUPPLY = 20_000_000 * 10 ** 18; // 2% pre allocation, fully unlocked
 
+
+    // Start time
     uint256 public ecosystemStartTime;
     uint256 public strategicFinanceStartTime;
     uint256 public teamStartTime;
 
+    // Released amount
     uint256 public ecosystemReleased;
     uint256 public strategicFinanceReleased;
     uint256 public teamReleased;
 
+    // Total claimed amount
     uint256 public totalClaimed;
 
     /**********
@@ -65,7 +67,6 @@ contract XLToken is ERC20Upgradeable, Auth {
 
     function initialize(
         address _superOwner,
-        address _bondingAddress,
         address _taskIncentiveAddress,
         address _ecosystemFundAddress,
         address _strategicFinanceAddress,
@@ -74,7 +75,6 @@ contract XLToken is ERC20Upgradeable, Auth {
     ) public initializer {
         super.initialize(_superOwner); // Auth
         __ERC20_init("XL", "XL");
-        bondingAddress = _bondingAddress;
         taskIncentiveAddress = _taskIncentiveAddress;
         ecosystemFundAddress = _ecosystemFundAddress;
         strategicFinanceAddress = _strategicFinanceAddress;
@@ -216,14 +216,12 @@ contract XLToken is ERC20Upgradeable, Auth {
     }
 
     function setAddresses(
-        address _bondingAddress,
         address _taskIncentiveAddress,
         address _ecosystemFundAddress,
         address _strategicFinanceAddress,
         address _teamAddress,
         address _marketingAddress
     ) external onlySuperOwner {
-        bondingAddress = _bondingAddress;
         taskIncentiveAddress = _taskIncentiveAddress;
         ecosystemFundAddress = _ecosystemFundAddress;
         strategicFinanceAddress = _strategicFinanceAddress;
