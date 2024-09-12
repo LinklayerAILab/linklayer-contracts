@@ -22,10 +22,10 @@ task("deployXL", "deploy xl token contract")
             teamAddress, marketingAddress]) as unknown as XLToken;
         await token.waitForDeployment();
 
-        // proxy address 
+        // proxy address  0x369CfCcb23810c12c27FC456263485153a1b42De
         console.log("XL deployed to:", await token.getAddress());
 
-        // implementation address
+        // implementation address 0xb74FeAdF69611C0470e96A552Ae1b4B7cF03D3E1
         console.log("XL implementation address:", await hre.upgrades.erc1967.getImplementationAddress(await token.getAddress()));
     })
 
@@ -39,9 +39,9 @@ task("deployL", "deploy l token contract")
         token = await hre.upgrades.deployProxy(LToken, [deployer.address]) as unknown as LToken;
         await token.waitForDeployment();
 
-        // proxy address  0xa4db5cB5614cd71dF825584DB79356BbA8258929
+        // proxy address  0x9Cc40AeF41EE42eD4E36eD53550633c44dF4b795
         console.log("L deployed to:", await token.getAddress());
 
-        // implementation address 0x11bD179dCB1faa0BBd5318D0379b8146Fef40e9C
+        // implementation address 0x19ff4463fC9FF122D7D393950E5FEB80fFb0464d
         console.log("L implementation address:", await hre.upgrades.erc1967.getImplementationAddress(await token.getAddress()));
     })

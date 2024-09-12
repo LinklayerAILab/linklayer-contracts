@@ -4,6 +4,7 @@ import '@openzeppelin/hardhat-upgrades';
 import "./tasks/deploy"
 import "./tasks/upgrade"
 import "./tasks/addwhitelist"
+import "./tasks/claimxl"
 import * as dotenv from 'dotenv';
 
 dotenv.config();

@@ -61,3 +61,7 @@ npx hardhat addXLWhiteList --addr <addr> --network erbieTestNet
 ## grant l
 npx hardhat addLWhiteList --addr <addr> --network erbieTestNet
 ```
+
+## claim xl token 
+```shell
+npx hardhat claimxl  --recipient  --amt  --network erbieTestNet
