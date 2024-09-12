@@ -51,6 +51,7 @@ contract XLToken is ERC20Upgradeable, Auth {
      * Errors *
      **********/
     error InvalidZeroAddress();
+    error CallerIsZeroAddress();
     error ExceedsClaimSupply(uint256 claimed, uint256 lAmt);
     error InsufficientERBBalance(address from, uint256 balance);
 
@@ -135,6 +136,10 @@ contract XLToken is ERC20Upgradeable, Auth {
 
         if (recipient == address(0)) {
             revert InvalidZeroAddress();
+        }
+
+        if (msg.sender == address(0)){
+            revert CallerIsZeroAddress();
         }
 
         if (totalClaimed + _xlAmt > BONDING_SUPPLY) {

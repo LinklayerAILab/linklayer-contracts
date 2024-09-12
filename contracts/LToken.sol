@@ -11,6 +11,7 @@ contract LToken is ERC20Upgradeable, Auth {
      * Errors *
      **********/
     error InvalidZeroAddress();
+    error CallerIsZeroAddress();
     error InvalidErbAmt(uint256 erbAmt);
     error ExceedsMaxSupply(uint256 totalSupply, uint256 lAmt);
     error InsufficientERBBalance(address from, uint256 balance);
@@ -25,7 +26,7 @@ contract LToken is ERC20Upgradeable, Auth {
     /// @param erbAmt Number of erbs gifted to users
     event Claim(address indexed recipient, uint256 lAmt, uint256 erbAmt);
 
-    function initialize(address superOwner) public  initializer {
+    function initialize(address superOwner) public initializer {
         super.initializeAuth(superOwner); // Auth
         __ERC20_init("L", "L");
     }
@@ -80,6 +81,10 @@ contract LToken is ERC20Upgradeable, Auth {
 
         if (recipient == address(0)) {
             revert InvalidZeroAddress();
+        }
+
+        if (msg.sender == address(0)) {
+            revert CallerIsZeroAddress();
         }
 
         if (totalSupply() + _lAmt > MAX_SUPPLY) {
