@@ -1,4 +1,4 @@
-# Erbie XL token
+# Linklayer XL token
 Redeem XL ERC20 token with point rewards to achieve value circulation
 
 

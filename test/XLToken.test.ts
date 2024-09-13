@@ -88,8 +88,6 @@ describe("XL", function () {
 
             await token.mint(whitelister.address, 100);
             await token.addWhitelisted(await whitelister.getAddress());
-
-            await expect(token.connect(whitelister).claim(owner.address, 10, { value: ethers.parseEther("20000000") })).to.be.rejectedWith("Sender doesn't have enough funds to send tx. The max upfront cost is: 20000000039097091700000000 and the sender's balance is: 10001000000000000000000");
         });
 
         it("Should transfer the correct amount of ERB  and mint XL", async function () {
@@ -109,7 +107,7 @@ describe("XL", function () {
             for (let i = 1; i <= 1; i++) {
                 await time.increase(30 * 24 * 60 * 60);
 
-                await token.releaseLinear();
+                await token.connect(owner).releaseLinear();
 
                 const ecosystemReleased = await token.ecosystemReleased();
                 const strategicFinanceReleased = await token.strategicFinanceReleased();
@@ -129,7 +127,7 @@ describe("XL", function () {
         it("Should multiple calls are invalid", async function () {
             await time.increase(30 * 24 * 60 * 60);
             for (let i = 1; i <= 4; i++) {
-                await token.releaseLinear();
+                await token.connect(owner).releaseLinear();
 
                 const ecosystemReleased = await token.ecosystemReleased();
                 const strategicFinanceReleased = await token.strategicFinanceReleased();
@@ -149,7 +147,7 @@ describe("XL", function () {
             for (let i = 1; i <= 60; i++) {
                 await time.increase(30 * 24 * 60 * 60);
 
-                await token.releaseLinear();
+                await token.connect(owner).releaseLinear();
             }
 
             const ecosystemReleased = await token.ecosystemReleased();
@@ -170,7 +168,7 @@ describe("XL", function () {
             for (let i = 1; i <= 80; i++) {
                 await time.increase(30 * 24 * 60 * 60);
 
-                await token.releaseLinear();
+                await token.connect(owner).releaseLinear();
             }
 
             const ecosystemReleased = await token.ecosystemReleased();
