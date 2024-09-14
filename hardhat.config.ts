@@ -18,7 +18,7 @@ const config: HardhatUserConfig = {
       chainId: 51888,
     },
     erbieMainNet: {
-      url: "http://159.138.82.123:8123",
+      url: "http://192.168.84.240:8560",
       accounts: [process.env.PRIVATE_KEY || ""], // if use erbieMainNet, you need to set your private key to .env
       chainId: 50888,
     }

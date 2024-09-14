@@ -8,11 +8,11 @@ task("deployXL", "deploy xl token contract")
         const { ethers } = hre;
         const [deployer] = await ethers.getSigners();
 
-        const taskIncentiveAddress = "0x61EDC056a11048fF0B8296871A48730D9d51B90B"
-        const ecosystemFundAddress = "0xE6cEa9c34a8395478F1faF1f266e595FF464a668"
-        const strategicFinanceAddress = "0x002E73CaaBD414eeaFE0fe3ecA18F4c7D9069207"
-        const teamAddress = "0xc11BcFb7Ce6E58A49c7C78fEf5924a2594fB220B"
-        const marketingAddress = "0x44fdC8202a018894F240Fe12fb31595cd22aa3D3"
+        const taskIncentiveAddress = "0x4a13c2a6fF127C8843c274EbAaeAF8cCc6dB5dE0"
+        const ecosystemFundAddress = "0x3b06628b73dAE19CE15AD93eE70d97D1f79BcBC7"
+        const strategicFinanceAddress = "0x429F64ef0764F191aA0B23cbb486040285fe73B7"
+        const teamAddress = "0x92C07A6549f084D6a774DCA6F2Eb6bc5058Bd1EB"
+        const marketingAddress = "0xdD81a1a26434C757739D547582D62cB4cf56e08c"
 
 
         const XLToken = await ethers.getContractFactory("XLToken");
@@ -22,10 +22,10 @@ task("deployXL", "deploy xl token contract")
             teamAddress, marketingAddress]) as unknown as XLToken;
         await token.waitForDeployment();
 
-        // proxy address  0x369CfCcb23810c12c27FC456263485153a1b42De
+        // proxy address  0xCBD46A2D6c99A7B8daa2C35DE2aEad37Aa36f506
         console.log("XL deployed to:", await token.getAddress());
 
-        // implementation address 0xb74FeAdF69611C0470e96A552Ae1b4B7cF03D3E1
+        // implementation address  0x1DF0386369DbCD1a189dD36f79846b7c9cD62090
         console.log("XL implementation address:", await hre.upgrades.erc1967.getImplementationAddress(await token.getAddress()));
     })
 
@@ -39,9 +39,9 @@ task("deployL", "deploy l token contract")
         token = await hre.upgrades.deployProxy(LToken, [deployer.address]) as unknown as LToken;
         await token.waitForDeployment();
 
-        // proxy address  0x9Cc40AeF41EE42eD4E36eD53550633c44dF4b795
+        // proxy address  0x9c5e37716861A7e03976fb996228c00D31Dd40Ea
         console.log("L deployed to:", await token.getAddress());
 
-        // implementation address 0x19ff4463fC9FF122D7D393950E5FEB80fFb0464d
+        // implementation address 0x92F33Df758937393E5b3949e1a61C9aCeb734A84
         console.log("L implementation address:", await hre.upgrades.erc1967.getImplementationAddress(await token.getAddress()));
     })

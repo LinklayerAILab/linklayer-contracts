@@ -8,7 +8,7 @@ task("addXLWhiteList", "Whitelist an address")
     const [deployer] = await ethers.getSigners();
 
     const MyContract = await ethers.getContractFactory("XLToken");
-    const contract = MyContract.attach("0x369CfCcb23810c12c27FC456263485153a1b42De") as XLToken;
+    const contract = MyContract.attach("0xCBD46A2D6c99A7B8daa2C35DE2aEad37Aa36f506") as XLToken;
 
     await contract.connect(deployer).addWhitelisted(args.addr);
 
@@ -25,7 +25,7 @@ task("addXLWhiteList", "Whitelist an address")
     const [deployer] = await ethers.getSigners();
 
     const MyContract = await ethers.getContractFactory("LToken");
-    const contract = MyContract.attach("0x9Cc40AeF41EE42eD4E36eD53550633c44dF4b795") as LToken;
+    const contract = MyContract.attach("0x9c5e37716861A7e03976fb996228c00D31Dd40Ea") as LToken;
 
     await contract.connect(deployer).addWhitelisted(args.addr);
 

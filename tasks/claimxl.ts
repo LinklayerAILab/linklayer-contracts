@@ -9,7 +9,7 @@ task("claimxl", "claim xl token")
     const [deployer] = await ethers.getSigners();
 
     const MyContract = await ethers.getContractFactory("XLToken");
-    const contract = MyContract.attach("0x369CfCcb23810c12c27FC456263485153a1b42De") as XLToken;
+    const contract = MyContract.attach("0xCBD46A2D6c99A7B8daa2C35DE2aEad37Aa36f506") as XLToken;
 
     const amtconvert = ethers.parseEther(args.amt);
 

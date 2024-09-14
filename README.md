@@ -38,9 +38,11 @@ npx hardhat test
 > If there is no change in the implementation, then every time this script is executed, the proxy contract address will change
 ```shell
 npx hardhat deployXL --network erbieTestNet
+npx hardhat deployXL --network erbieMainNet
 ```
 ```shell
 npx hardhat deployL --network erbieTestNet
+npx hardhat deployL --network erbieMainNet
 ```
 
 ## upgrade
@@ -49,19 +51,24 @@ npx hardhat deployL --network erbieTestNet
 > Contract upgrade, there will be a delay in hre.upgrades.erc1967. getImplementeAddress
 ```shell
 npx hardhat upgrade --proxyaddr <proxy addr> --network erbieTestNet
+npx hardhat upgrade --proxyaddr <proxy addr> --network erbieMainNet
 
 npx hardhat upgradeL --proxyaddr <proxy addr> --network erbieTestNet
+npx hardhat upgradeL --proxyaddr <proxy addr> --network erbieMainNet
 ```
 
 ## add addr to whitelist
 ```shell
 ## grant xl 
 npx hardhat addXLWhiteList --addr <addr> --network erbieTestNet
+npx hardhat addXLWhiteList --addr <addr> --network erbieMainNet
 
 ## grant l
 npx hardhat addLWhiteList --addr <addr> --network erbieTestNet
+npx hardhat addXLWhiteList --addr <addr> --network erbieMainNet
 ```
 
 ## claim xl token 
 ```shell
 npx hardhat claimxl  --recipient  --amt  --network erbieTestNet
+npx hardhat addXLWhiteList --addr <addr> --network erbieMainNet
