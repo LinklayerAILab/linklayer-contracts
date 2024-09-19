@@ -186,6 +186,13 @@ describe("XL", function () {
     
     });
 
+    // 版本号是1.0.0
+    describe("Version", function () {
+        it("Should return version", async function () {
+            expect(await token.getVersion()).to.equal("1.0.0");
+        });
+    });
+
 
     describe("Upgrade", function () {
         it("Should upgrade contracts", async function () {

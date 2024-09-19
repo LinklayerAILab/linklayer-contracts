@@ -5,6 +5,7 @@ import "./tasks/deploy"
 import "./tasks/upgrade"
 import "./tasks/addwhitelist"
 import "./tasks/claimxl"
+import "./tasks/version"
 import * as dotenv from 'dotenv';
 
 dotenv.config();

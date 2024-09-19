@@ -244,4 +244,8 @@ contract XLToken is ERC20Upgradeable, Auth {
         teamAddress = _teamAddress;
         marketingAddress = _marketingAddress;
     }
+
+    function getVersion() public pure returns (string memory) {
+        return "1.0.0"; 
+    }
 }

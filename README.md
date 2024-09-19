@@ -66,9 +66,36 @@ npx hardhat addXLWhiteList --addr <addr> --network erbieMainNet
 ## grant l
 npx hardhat addLWhiteList --addr <addr> --network erbieTestNet
 npx hardhat addXLWhiteList --addr <addr> --network erbieMainNet
+
+
+
+npx hardhat addXLWhiteList --addr 0xDb85D05039408E9bD4644AB3527CBD2fcbbbD527 --network erbieMainNet
+npx hardhat addXLWhiteList --addr 0x651C90B37E88e68aaC134D12DCE52E133f8116b7 --network erbieMainNet
+npx hardhat addXLWhiteList --addr 0x1F49b7F54960CA8a56eea5a01be54A5f71185544 --network erbieMainNet
+
+
+npx hardhat addLWhiteList --addr 0xDb85D05039408E9bD4644AB3527CBD2fcbbbD527 --network erbieMainNet
+npx hardhat addLWhiteList --addr 0x651C90B37E88e68aaC134D12DCE52E133f8116b7 --network erbieMainNet
+npx hardhat addLWhiteList --addr 0x1F49b7F54960CA8a56eea5a01be54A5f71185544 --network erbieMainNet
+
+
+npx hardhat addXLWhiteList --addr 0xDb85D05039408E9bD4644AB3527CBD2fcbbbD527 --network erbieTestNet
+npx hardhat addXLWhiteList --addr 0x651C90B37E88e68aaC134D12DCE52E133f8116b7 --network erbieTestNet
+npx hardhat addXLWhiteList --addr 0x1F49b7F54960CA8a56eea5a01be54A5f71185544 --network erbieTestNet
+
+
+npx hardhat addLWhiteList --addr 0xDb85D05039408E9bD4644AB3527CBD2fcbbbD527 --network erbieTestNet
+npx hardhat addLWhiteList --addr 0x651C90B37E88e68aaC134D12DCE52E133f8116b7 --network erbieTestNet
+npx hardhat addLWhiteList --addr 0x1F49b7F54960CA8a56eea5a01be54A5f71185544 --network erbieTestNet
+
 ```
 
 ## claim xl token 
 ```shell
 npx hardhat claimxl  --recipient  --amt  --network erbieTestNet
 npx hardhat addXLWhiteList --addr <addr> --network erbieMainNet
+
+
+## get version
+npx hardhat version   --network erbieTestNet
+npx hardhat version   --network erbieMainNet
