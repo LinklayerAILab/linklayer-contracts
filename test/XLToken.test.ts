@@ -16,8 +16,8 @@ describe("XL", function () {
     let teamAddress: any;
     let marketingAddress: any;
 
-    const TASK_INCENTIVE_SUPPLY = 100_000_000n * 10n ** 18n;
-    const MARKETING_SUPPLY = 20_000_000n * 10n ** 18n;
+    const TASK_INCENTIVE_SUPPLY = 800_000_000n * 10n ** 18n;
+    const MARKETING_SUPPLY = 200_000_000n * 10n ** 18n;
 
 
     beforeEach(async function () {
@@ -117,8 +117,8 @@ describe("XL", function () {
                 expect(strategicFinanceReleased).to.be.greaterThan(0);
                 expect(teamReleased).to.be.equal(0);  // Released quarterly
 
-                expect(await token.balanceOf(ecosystemFundAddress.address)).to.equal(2777777777777777777777777n);
-                expect(await token.balanceOf(strategicFinanceAddress.address)).to.equal(2222222222222222222222222n);
+                expect(await token.balanceOf(ecosystemFundAddress.address)).to.equal(20_000_000n * 10n ** 18n);
+                expect(await token.balanceOf(strategicFinanceAddress.address)).to.equal(27777777777777777777777777n);
                 expect(await token.balanceOf(teamAddress.address)).to.equal(0);
             }
         });
@@ -137,8 +137,8 @@ describe("XL", function () {
                 expect(strategicFinanceReleased).to.be.greaterThan(0);
                 expect(teamReleased).to.be.equal(0);  // Released quarterly
 
-                expect(await token.balanceOf(ecosystemFundAddress.address)).to.equal(2777777777777777777777777n);
-                expect(await token.balanceOf(strategicFinanceAddress.address)).to.equal(2222222222222222222222222n);
+                expect(await token.balanceOf(ecosystemFundAddress.address)).to.equal(20_000_000n * 10n ** 18n);
+                expect(await token.balanceOf(strategicFinanceAddress.address)).to.equal(27777777777777777777777777n);
                 expect(await token.balanceOf(teamAddress.address)).to.equal(0);
             }
         });
@@ -158,9 +158,9 @@ describe("XL", function () {
             expect(strategicFinanceReleased).to.be.greaterThan(0);
             expect(teamReleased).to.be.greaterThan(0);  // Released quarterly
 
-            expect(await token.balanceOf(ecosystemFundAddress.address)).to.equal(100000000000000000000000000n);
-            expect(await token.balanceOf(strategicFinanceAddress.address)).to.equal(80000000000000000000000000n);
-            expect(await token.balanceOf(teamAddress.address)).to.equal(50000000000000000000000000n);
+            expect(await token.balanceOf(ecosystemFundAddress.address)).to.equal(1_200_000_000n * 10n ** 18n);
+            expect(await token.balanceOf(strategicFinanceAddress.address)).to.equal(1_000_000_000n * 10n ** 18n);
+            expect(await token.balanceOf(teamAddress.address)).to.equal(600_000_000n * 10n ** 18n);
         });
 
 
@@ -179,10 +179,11 @@ describe("XL", function () {
             expect(strategicFinanceReleased).to.be.greaterThan(0);
             expect(teamReleased).to.be.greaterThan(0);  // Released quarterly
 
-            expect(await token.balanceOf(ecosystemFundAddress.address)).to.equal(100000000000000000000000000n);
-            expect(await token.balanceOf(strategicFinanceAddress.address)).to.equal(80000000000000000000000000n);
-            expect(await token.balanceOf(teamAddress.address)).to.equal(50000000000000000000000000n);
+            expect(await token.balanceOf(ecosystemFundAddress.address)).to.equal(1_200_000_000n * 10n ** 18n);
+            expect(await token.balanceOf(strategicFinanceAddress.address)).to.equal(1_000_000_000n * 10n ** 18n);
+            expect(await token.balanceOf(teamAddress.address)).to.equal(600_000_000n * 10n ** 18n);
         });
+    
     });
 
 

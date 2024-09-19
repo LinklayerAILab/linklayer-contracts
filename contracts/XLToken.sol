@@ -8,7 +8,7 @@ import "./Auth.sol";
 contract XLToken is ERC20Upgradeable, Auth {
     using Math for uint256;
 
-    uint256 public constant MAX_SUPPLY = 1_000_000_000 * 10 ** 18;
+    uint256 public constant MAX_SUPPLY = 10_000_000_000 * 10 ** 18;
 
     uint256 public constant THREE_YEARS = 3 * 365 days;
     uint256 public constant FIVE_YEARS = 5 * 365 days;
@@ -18,21 +18,21 @@ contract XLToken is ERC20Upgradeable, Auth {
     /******************
      * Assign address *
      *****************/
-    address public taskIncentiveAddress; // 10% Task and Invitation Incentive Address
-    address public ecosystemFundAddress; // 10% Ecosystem Fund Address
-    address public strategicFinanceAddress; // 8% Strategic Financing Address
-    address public teamAddress; // 5% team address
-    address public marketingAddress; // 2% marketing address
+    address public taskIncentiveAddress; // Task and Invitation Incentive Address
+    address public ecosystemFundAddress; // Ecosystem Fund Address
+    address public strategicFinanceAddress; // Strategic Financing Address
+    address public teamAddress; // team address
+    address public marketingAddress; // marketing address
 
     /********************
      * Supply Amounts ***
      ********************/
-    uint256 public constant BONDING_SUPPLY = 650_000_000 * 10 ** 18; //65% released through claim
-    uint256 public constant TASK_INCENTIVE_SUPPLY = 100_000_000 * 10 ** 18; // 10% pre allocation, fully unlocked
-    uint256 public constant ECOSYSTEM_FUND_SUPPLY = 100_000_000 * 10 ** 18; // 10% linear release over 3 years
-    uint256 public constant STRATEGIC_FINANCE_SUPPLY = 80_000_000 * 10 ** 18; // 8% linearly released over 3 years
-    uint256 public constant TEAM_SUPPLY = 50_000_000 * 10 ** 18; //5% linear release over 5 years
-    uint256 public constant MARKETING_SUPPLY = 20_000_000 * 10 ** 18; // 2% pre allocation, fully unlocked
+    uint256 public constant BONDING_SUPPLY = 6_200_000_000 * 10 ** 18; //62% released through claim
+    uint256 public constant TASK_INCENTIVE_SUPPLY = 800_000_000 * 10 ** 18; // 8% pre allocation, fully unlocked
+    uint256 public constant ECOSYSTEM_FUND_SUPPLY = 1_200_000_000 * 10 ** 18; // 12% linear release over 5 years ,released every month
+    uint256 public constant STRATEGIC_FINANCE_SUPPLY = 1_000_000_000 * 10 ** 18; // 10% linearly released over 3 years,released every month
+    uint256 public constant TEAM_SUPPLY = 600_000_000 * 10 ** 18; //6% linear release over 5 years,released every quarter
+    uint256 public constant MARKETING_SUPPLY = 200_000_000 * 10 ** 18; // 2% pre allocation, fully unlocked
 
     // Start time
     uint256 public ecosystemStartTime;
@@ -63,7 +63,7 @@ contract XLToken is ERC20Upgradeable, Auth {
     /// @param recipient Receive users of XL and erb
     /// @param xlAmt The quantity of XL extracted by the user
     /// @param erbAmt Number of erbs gifted to users
-    event Claim(address indexed recipient, uint256 xlAmt, uint256 erbAmt);
+    event Claim(address indexed recipient, uint256 indexed xlAmt, uint256 indexed erbAmt);
 
     function initialize(
         address _superOwner,
@@ -138,7 +138,7 @@ contract XLToken is ERC20Upgradeable, Auth {
             revert InvalidZeroAddress();
         }
 
-        if (msg.sender == address(0)){
+        if (msg.sender == address(0)) {
             revert CallerIsZeroAddress();
         }
 
@@ -163,7 +163,7 @@ contract XLToken is ERC20Upgradeable, Auth {
     function releaseLinear() external onlySuperOwner {
         uint256 ecosystemToRelease = calculateLinearRelease(
             ECOSYSTEM_FUND_SUPPLY,
-            THREE_YEARS,
+            FIVE_YEARS,
             ecosystemStartTime,
             ecosystemReleased,
             MONTH
