@@ -1,5 +1,5 @@
 import { task } from "hardhat/config";
-import { XLToken, LToken } from "../typechain-types"
+import { XLToken, LToken, Punk } from "../typechain-types"
 
 
 task("deployXL", "deploy xl token contract")
@@ -49,3 +49,18 @@ task("deployL", "deploy l token contract")
         // implementation address 0x07A45D1F9ed2661f8Da3a7C786e79784855Fb8b9 testnet
         console.log("L implementation address:", await hre.upgrades.erc1967.getImplementationAddress(await token.getAddress()));
     })
+
+
+
+// 0xcE1CC1Aa4e1CeE97b13c9E650A7Be66345D7D04f
+// npx hardhat deploynft --network erbieTestNet
+task("deploynft", "deploy nft contract")
+    .setAction(async (args, hre) => {
+        const { ethers } = hre;
+        const [deployer] = await ethers.getSigners();
+        const Punk = await ethers.getContractFactory("Punk");
+        const nft = await Punk.connect(deployer).deploy() as Punk;
+        await nft.waitForDeployment();
+        console.log("nft deployed to:", await nft.getAddress());
+    })
+

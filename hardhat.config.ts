@@ -7,6 +7,7 @@ import "./tasks/addwhitelist"
 import "./tasks/claimxl"
 import "./tasks/version"
 import "./tasks/balance"
+import "./tasks/mintnft"
 import * as dotenv from 'dotenv';
 
 dotenv.config();
