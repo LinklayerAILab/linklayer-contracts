@@ -1,5 +1,5 @@
 import { task } from "hardhat/config";
-import { XLToken, LToken, Punk } from "../typechain-types"
+import { XLToken, LToken, Punk,GameItems } from "../typechain-types"
 
 
 task("deployXL", "deploy xl token contract")
@@ -64,3 +64,18 @@ task("deploynft", "deploy nft contract")
         console.log("nft deployed to:", await nft.getAddress());
     })
 
+
+
+
+
+// npx hardhat deployerc1155 --network erbieTestNet
+// 0x03CFF07122b8e82418bd9152763516f7141a2c39
+  task("deployerc1155", "deploy erc1155 test contract")
+  .setAction(async (args, hre) => {
+      const { ethers } = hre;
+      const [deployer] = await ethers.getSigners();
+      const gameItemsFac = await ethers.getContractFactory("GameItems");
+      const gameItems = await gameItemsFac.connect(deployer).deploy() as GameItems;
+      await gameItems.waitForDeployment();
+      console.log("erc1155 deployed to:", await gameItems.getAddress());
+  })
