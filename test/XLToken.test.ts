@@ -98,6 +98,8 @@ describe("XL", function () {
 
             expect(await ethers.provider.getBalance(burner.address)).to.equal(ethers.parseEther("10001"));
             expect(await token.balanceOf(burner.address)).to.equal(100);
+            // 打印totoal supply
+            console.log(`Total supply: ${await token.totalSupply()}`);
         });
     });
 
