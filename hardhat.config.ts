@@ -8,6 +8,7 @@ import "./tasks/claimxl"
 import "./tasks/version"
 import "./tasks/balance"
 import "./tasks/mintnft"
+import "./tasks/release"
 import * as dotenv from 'dotenv';
 
 dotenv.config();
