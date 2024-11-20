@@ -19,7 +19,6 @@ task("addXLWhiteList", "Whitelist an address")
 
 
 
-
 task("addLWhiteList", "Whitelist an address")
   .addParam("addr", "The address to whitelist")
   .setAction(async (args, hre) => {
@@ -27,7 +26,8 @@ task("addLWhiteList", "Whitelist an address")
     const [deployer] = await ethers.getSigners();
 
     const MyContract = await ethers.getContractFactory("LToken");
-    const contract = MyContract.attach("0xB014083f30Dc82AC18E82e9112c66455D26bC517") as LToken; // testnet 
+    //const contract = MyContract.attach("0xB014083f30Dc82AC18E82e9112c66455D26bC517") as LToken; // testnet 
+    const contract = MyContract.attach("0x9c5e37716861A7e03976fb996228c00D31Dd40Ea") as LToken; // mainnet
 
     await contract.connect(deployer).addWhitelisted(args.addr);
 
