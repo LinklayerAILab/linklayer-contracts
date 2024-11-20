@@ -111,3 +111,9 @@ npx hardhat balance --addr  0x3b06628b73dAE19CE15AD93eE70d97D1f79BcBC7  --networ
 npx hardhat balance --addr  0x429F64ef0764F191aA0B23cbb486040285fe73B7  --network erbieMainNet
 npx hardhat balance --addr  0x92C07A6549f084D6a774DCA6F2Eb6bc5058Bd1EB  --network erbieMainNet
 npx hardhat balance --addr  0xdD81a1a26434C757739D547582D62cB4cf56e08c  --network erbieMainNet
+
+## release token
+npx hardhat realease   --network erbieMainNet
+npx hardhat balance --addr  0x3b06628b73dAE19CE15AD93eE70d97D1f79BcBC7  --network erbieMainNet
+npx hardhat balance --addr  0x429F64ef0764F191aA0B23cbb486040285fe73B7  --network erbieMainNet
+npx hardhat balance --addr  0x92C07A6549f084D6a774DCA6F2Eb6bc5058Bd1EB  --network erbieMainNet
