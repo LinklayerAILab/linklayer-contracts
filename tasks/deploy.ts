@@ -42,11 +42,11 @@ task("deployL", "deploy l token contract")
         await token.waitForDeployment();
 
         // proxy address  0x9c5e37716861A7e03976fb996228c00D31Dd40Ea  mainnet
-        // proxy address 0xB014083f30Dc82AC18E82e9112c66455D26bC517 testnet 
+        // proxy address 0xCBD46A2D6c99A7B8daa2C35DE2aEad37Aa36f506 testnet 
         console.log("L deployed to:", await token.getAddress());
 
         // implementation address 0x92F33Df758937393E5b3949e1a61C9aCeb734A84 mainnet
-        // implementation address 0x07A45D1F9ed2661f8Da3a7C786e79784855Fb8b9 testnet
+        // implementation address 0x1DF0386369DbCD1a189dD36f79846b7c9cD62090 testnet
         console.log("L implementation address:", await hre.upgrades.erc1967.getImplementationAddress(await token.getAddress()));
     })
 
