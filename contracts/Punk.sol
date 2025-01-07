@@ -1,21 +1,22 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
-import "@openzeppelin/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts-upgradeable/token/ERC721/ERC721Upgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 
-contract Punk is ERC721, Ownable {
-    uint256 public constant MAX_SUPPLY = 10_000_000; 
-    uint256 private _currentTokenId = 1; 
+contract Punk is ERC721Upgradeable,OwnableUpgradeable{
+    uint256 public constant MAX_SUPPLY = 10_000_000;
+    uint256 private _currentTokenId = 1;
     string private _baseTokenURI;
 
     event NFTMinted(address indexed to, uint256 tokenId);
 
-    constructor(
+    function initialize(
         string memory baseURI_,
         string memory name_,
         string memory symbol_
-    ) ERC721(name_,symbol_) Ownable(msg.sender) {
+    ) public initializer {
+        __ERC721_init(name_, symbol_);
         _baseTokenURI = baseURI_;
     }
 
@@ -47,7 +48,7 @@ contract Punk is ERC721, Ownable {
         _mint(recipient, _currentTokenId);
 
         emit NFTMinted(recipient, _currentTokenId);
-        
+
         _currentTokenId++;
     }
 
