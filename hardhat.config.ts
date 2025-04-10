@@ -9,6 +9,8 @@ import "./tasks/version"
 import "./tasks/balance"
 import "./tasks/mintnft"
 import "./tasks/release"
+import "./tasks/approveXL"
+import "./tasks/approveL"
 import * as dotenv from 'dotenv';
 
 dotenv.config();

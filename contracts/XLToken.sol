@@ -63,7 +63,11 @@ contract XLToken is ERC20Upgradeable, Auth {
     /// @param recipient Receive users of XL and erb
     /// @param xlAmt The quantity of XL extracted by the user
     /// @param erbAmt Number of erbs gifted to users
-    event Claim(address indexed recipient, uint256 indexed xlAmt, uint256 indexed erbAmt);
+    event Claim(
+        address indexed recipient,
+        uint256 indexed xlAmt,
+        uint256 indexed erbAmt
+    );
 
     function initialize(
         address _superOwner,
@@ -246,6 +250,6 @@ contract XLToken is ERC20Upgradeable, Auth {
     }
 
     function getVersion() public pure returns (string memory) {
-        return "1.0.0"; 
+        return "1.0.0";
     }
 }
