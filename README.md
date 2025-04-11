@@ -133,3 +133,6 @@ npx hardhat balance --addr  0x92C07A6549f084D6a774DCA6F2Eb6bc5058Bd1EB  --networ
 ## approve token
 npx hardhat approveXL --spender <erbieBridge address> --amount <amount>
 npx hardhat approveL --spender <erbieBridge address> --amount <amount>
+
+## mint L token
+npx hardhat mintL --to 0x123... --amount 10000 --network erbieTestNet
