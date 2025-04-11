@@ -131,8 +131,17 @@ npx hardhat balance --addr  0x92C07A6549f084D6a774DCA6F2Eb6bc5058Bd1EB  --networ
 
 
 ## approve token
-npx hardhat approveXL --spender <erbieBridge address> --amount <amount>
-npx hardhat approveL --spender <erbieBridge address> --amount <amount>
+npx hardhat approveXL --spender <erbieBridge address> --amount <amount> --tokenaddress <XL token contract address> --network <erbieTestNet|erbieMainNet>
+npx hardhat approveL --spender <erbieBridge address> --amount <amount> --tokenaddress <L token contract address> --network <erbieTestNet|erbieMainNet>
+
+## Examples:
+### TestNet
+npx hardhat approveXL --spender 0x123... --amount 1000000000000000000 --tokenaddress 0x8E37190Bf2d959ffc4Fe0987f5890BBc7Cb3Bb2f --network erbieTestNet
+npx hardhat approveL --spender 0x123... --amount 1000000000000000000 --tokenaddress 0xCBD46A2D6c99A7B8daa2C35DE2aEad37Aa36f506 --network erbieTestNet
+
+### MainNet
+npx hardhat approveXL --spender 0x123... --amount 1000000000000000000 --tokenaddress 0x5D6C04B0AA084c95b5F4f09fF3e9F9c5120Ef8FD --network erbieMainNet
+npx hardhat approveL --spender 0x123... --amount 1000000000000000000 --tokenaddress 0x9c5e37716861A7e03976fb996228c00D31Dd40Ea --network erbieMainNet
 
 ## mint L token
 npx hardhat mintL --to 0x123... --amount 10000 --network erbieTestNet
