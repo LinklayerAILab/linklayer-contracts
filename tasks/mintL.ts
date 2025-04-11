@@ -4,19 +4,16 @@ import { LToken } from "../typechain-types"
 task("mintL", "Mint L tokens to a specified address (requires MINTER_ROLE)")
     .addParam("to", "Address to receive the minted tokens")
     .addParam("amount", "Amount of tokens to mint (in wei)")
+    .addParam("tokenaddress", "Address of the L token contract")
     .setAction(async (args, hre) => {
         const { ethers } = hre;
         const [deployer] = await ethers.getSigners();
 
         console.log("Minting L tokens with account:", deployer.address);
+        console.log("Using L token contract at:", args.tokenaddress);
 
         const MyContract = await ethers.getContractFactory("LToken");
-
-        // Testnet L token address - update this with the correct address
-        const contract = MyContract.attach("0xCBD46A2D6c99A7B8daa2C35DE2aEad37Aa36f506") as LToken;
-
-        // Mainnet L token address - update this with the correct address
-        // const contract = MyContract.attach("0x9c5e37716861A7e03976fb996228c00D31Dd40Ea") as LToken;
+        const contract = MyContract.attach(args.tokenaddress) as LToken;
 
         console.log(`Minting ${args.amount} L tokens to ${args.to}`);
 

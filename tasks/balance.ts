@@ -1,19 +1,25 @@
-
-
 import { task } from "hardhat/config";
 import { XLToken, LToken } from "../typechain-types"
 
-task("balance", "get version")
-    .addParam("addr", "query addr")
+task("balance", "Get token balance for an address")
+    .addParam("addr", "Address to query balance for")
+    .addParam("token", "Token type (XL or L)")
+    .addParam("tokenaddress", "Token contract address")
     .setAction(async (args, hre) => {
         const { ethers } = hre;
         const [deployer] = await ethers.getSigners();
 
-        const MyContract = await ethers.getContractFactory("XLToken");
-        //const contract = MyContract.attach("0x8E37190Bf2d959ffc4Fe0987f5890BBc7Cb3Bb2f") as XLToken;  // testnet xl
-        const contract = MyContract.attach("0x5D6C04B0AA084c95b5F4f09fF3e9F9c5120Ef8FD") as XLToken;  // mainnet xl 
-
-
-        const balance = await contract.balanceOf(args.addr);
-        console.log(`balance: ${balance}`);
+        if (args.token.toUpperCase() === "XL") {
+            const MyContract = await ethers.getContractFactory("XLToken");
+            const contract = MyContract.attach(args.tokenaddress) as XLToken;
+            const balance = await contract.balanceOf(args.addr);
+            console.log(`XL balance for ${args.addr}: ${balance}`);
+        } else if (args.token.toUpperCase() === "L") {
+            const MyContract = await ethers.getContractFactory("LToken");
+            const contract = MyContract.attach(args.tokenaddress) as LToken;
+            const balance = await contract.balanceOf(args.addr);
+            console.log(`L balance for ${args.addr}: ${balance}`);
+        } else {
+            console.error("Invalid token type. Use 'XL' or 'L'");
+        }
     });
